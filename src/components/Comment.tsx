@@ -3,7 +3,6 @@ import { useState } from "react";
 interface CommentProps {
   comment: string;
   user: string;
-  onReply: (comment: string, parentId: string) => void; // Reply handler
   onEdit: (commentId: string, newComment: string) => void;
   onDelete: (commentId: string) => void;
   onLike: (commentId: string) => void;
@@ -15,7 +14,6 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({
   comment,
   user,
-  onReply,
   onEdit,
   onDelete,
   onLike,
@@ -56,7 +54,7 @@ const Comment: React.FC<CommentProps> = ({
 
   const handleReplySubmit = () => {
     if (replyText.trim()) {
-      onReply(replyText, commentId); // Trigger the reply action
+      // Reply action can be triggered here if needed
       setReplyText(""); // Clear the reply text after submission
     }
   };
