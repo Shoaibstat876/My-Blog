@@ -3,7 +3,7 @@ import { useState } from "react";
 interface CommentProps {
   comment: string;
   user: string;
-  onReply: (comment: string, parentId: string) => void;
+  onReply: (comment: string, parentId: string) => void; // Reply handler
   onEdit: (commentId: string, newComment: string) => void;
   onDelete: (commentId: string) => void;
   onLike: (commentId: string) => void;
@@ -26,6 +26,7 @@ const Comment: React.FC<CommentProps> = ({
   const [showMenu, setShowMenu] = useState(false); // To toggle the menu visibility
   const [isEditing, setIsEditing] = useState(false); // To toggle the edit mode
   const [editedComment, setEditedComment] = useState(comment); // To store the edited comment
+  const [replyText, setReplyText] = useState(""); // To store the reply text
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedComment(e.target.value);
@@ -47,6 +48,17 @@ const Comment: React.FC<CommentProps> = ({
 
   const handleCancel = () => {
     setShowMenu(false); // Close menu without action
+  };
+
+  const handleReplyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReplyText(e.target.value);
+  };
+
+  const handleReplySubmit = () => {
+    if (replyText.trim()) {
+      onReply(replyText, commentId); // Trigger the reply action
+      setReplyText(""); // Clear the reply text after submission
+    }
   };
 
   return (
@@ -153,6 +165,23 @@ const Comment: React.FC<CommentProps> = ({
           </svg>
         </button>
         <span className="ml-2">{likes}</span>
+      </div>
+
+      {/* Reply Input */}
+      <div className="mt-4">
+        <input
+          type="text"
+          value={replyText}
+          onChange={handleReplyChange}
+          placeholder="Write a reply..."
+          className="w-full p-2 border border-gray-300 rounded-lg"
+        />
+        <button
+          onClick={handleReplySubmit}
+          className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg"
+        >
+          Reply
+        </button>
       </div>
 
       {/* Replies */}
